@@ -6,9 +6,6 @@
 **Lĩnh vực:** Học sâu Hình học (Geometric Deep Learning), Tính toán Hiệu năng cao (HPC), Ngôn ngữ học Cấu trúc  
 
 ---
-<img width="2598" height="1406" alt="image" src="https://github.com/user-attachments/assets/3fc0b60a-0a20-47f1-82e3-171688c2944e" />
-
----
 
 ## **Tóm tắt (Abstract)**
 Các Mô hình Ngôn ngữ Lớn (LLMs) đương đại đang vấp phải những giới hạn cố hữu do sự lệ thuộc vào không gian nhúng Euclidean (Euclidean embeddings) và độ phức tạp tính toán bậc hai của cơ chế Chú ý (Attention). Những kiến trúc "AI phẳng" này xử lý các token như các tọa độ biệt lập trong $\mathbb{R}^n$, từ đó thất bại trong việc mô phỏng hệ thống phân cấp topo nội tại của ngôn ngữ nhân loại. Chúng tôi giới thiệu **Geo-Llama**, một kiến trúc đột phá thực hiện tái tham số hóa mô hình Llama dựa trên khung **Đại số Hình học Bảo giác (CGA) $Cl_{4,1}$**. Bằng cách nâng các kích hoạt thần kinh (neural activations) lên đa tạp dấu Minkowski 5 chiều, chúng tôi thay thế sự tương đồng thống kê bằng các phép **giao cắt topo** và **phép quay nhóm Lie**. Bài báo đi sâu vào chi tiết cơ chế **Chú ý Tích Hình học (GPA)**, **Bộ tích lũy Rotor Đệ quy $O(1)$**, và đơn vị xử lý cấp độ silicon **GAPU (Geometric Algebra Processing Unit)**, đánh dấu bước chuyển mình từ xấp xỉ xác suất sang sự xác thực về mặt cấu trúc.
