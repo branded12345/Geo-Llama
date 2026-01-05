@@ -184,23 +184,33 @@ class GeoLlamaHybrid:
             if self.tokenizer.pad_token is None:
                 self.tokenizer.pad_token = self.tokenizer.eos_token
             
+            # 1. RESET STATE FOR NEW GENERATION (The Fix)
+            # Get batch size from input
+            bsz = inputs['input_ids'].shape[0]
+            self.state.reset_state(batch_size=bsz)
+            
             # Pre-Generation G-Stream Sync
-            # We run a forward pass to update PSI before generating header
             with torch.no_grad():
                 outputs = self.model(**inputs, output_hidden_states=True)
             last_hidden_state = outputs.hidden_states[-1]
         else:
+            # Mock logic...
+            bsz = 1
+            self.state.reset_state(batch_size=bsz)
             inputs = {}
             print(f"Mocking Forward Pass for prompt: '{prompt}'")
             last_hidden_state = torch.randn(1, 5, self.d_model).to(self.device)
             
         # Update the Geometric State (Right Brain)
-        rotors = self.lifter(last_hidden_state) 
+        rotors = self.lifter(last_hidden_state) # (Batch, Seq, Heads, 32)
         
         # Recursive Context Update
         seq_len = rotors.shape[1]
+        
+        # We must update time-step by time-step to respect causality
         for t in range(seq_len):
-            self.state.update(rotors[0, t], mixing_layer=self.mixing_layer)
+            # rotors[:, t] is (Batch, Heads, 32)
+            self.state.update(rotors[:, t], mixing_layer=self.mixing_layer)
             
         print(f"Structural Context PSI synchronized across {self.target_geo_heads} manifolds.")
         
