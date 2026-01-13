@@ -488,3 +488,78 @@ if __name__ == "__main__":
     plt.tight_layout()
     plt.savefig('final_benchmark_ladder.png')
     print(f"\n[Output] Graph saved to final_benchmark_ladder.png")
+
+    # =================================================================
+    # PART D: COMPUTE KERNEL BENCHMARK (MLX vs PYTORCH)
+    # =================================================================
+    try:
+        sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+        import mlx.core as mx
+        import kernel
+        
+        print("\n" + "="*80)
+        print("PART D: COMPUTE KERNEL BENCHMARK (Geometric Product)")
+        print("="*80)
+        
+        # Test Case: Matrix Multiplication of Multivectors
+        # (Batch, 256, 32) * (256, 512, 32) via Geometric Product
+        # Note: kernel.gapu_geometric_product is element-wise broadcastable (A * B)
+        # To match a Linear Layer (MatMul), we need broadcasting or simple element-wise throughput.
+        # Let's benchmark Element-Wise Product throughput (A * B) as a proxy for raw arithmetic power.
+        
+        B_SIZE = 4096 * 4
+        DIM = 32
+        
+        # 1. PyTorch
+        print(f"[PyTorch] Geometric Product (Element-wise) {B_SIZE} vectors...")
+        pt_a = torch.randn(B_SIZE, DIM, device=DEVICE)
+        pt_b = torch.randn(B_SIZE, DIM, device=DEVICE)
+        
+        # Using the helper from this file (compute_basis_product_cl41 logic is cached in GP_MAP)
+        # Note: 'GeometricLinear' uses einsum with GP_MAP.
+        gp_map = get_gp_map(DEVICE)
+        
+        # Element-wise product logic in PyTorch using the table:
+        # A_i * B_j * Table_ijk -> C_k
+        # Element-wise: (B, 32), (B, 32) -> (B, 32)
+        # We can simulate this with einsum:
+        
+        def pt_gp_elementwise(a, b):
+            # bs: batch, i: input, j: input, k: output
+            return torch.einsum('bi, bj, ijk -> bk', a, b, gp_map)
+            
+        # Warmup
+        for _ in range(5): _ = pt_gp_elementwise(pt_a, pt_b)
+        torch.cuda.synchronize() if torch.cuda.is_available() else None
+        
+        t0 = time.time()
+        for _ in range(50):
+            _ = pt_gp_elementwise(pt_a, pt_b)
+        torch.cuda.synchronize() if torch.cuda.is_available() else None
+        dt_pt = time.time() - t0
+        ops_pt = (B_SIZE * 50) / dt_pt
+        print(f"    -> PyTorch Speed: {ops_pt:,.0f} Products/sec")
+        
+        # 2. MLX
+        print(f"[MLX] GAPU Kernel (Metal)...")
+        mx_a = mx.array(pt_a.cpu().numpy())
+        mx_b = mx.array(pt_b.cpu().numpy())
+        
+        # Warmup
+        _ = kernel.gapu_geometric_product(mx_a, mx_b)
+        mx.eval(_)
+        
+        t0 = time.time()
+        for _ in range(50):
+            out = kernel.gapu_geometric_product(mx_a, mx_b)
+            mx.eval(out)
+        dt_mx = time.time() - t0
+        ops_mx = (B_SIZE * 50) / dt_mx
+        print(f"    -> MLX Speed:     {ops_mx:,.0f} Products/sec")
+        
+        print(f"    -> Speedup: {ops_mx / ops_pt:.2f}x")
+        
+    except ImportError:
+        pass
+    except Exception as e:
+        print(f"[Warning] MLX Benchmark skipped: {e}")
